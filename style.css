@@ -1,0 +1,43 @@
+body {
+    font-family: 'Courier New', Courier, monospace; /* Fonte de máquina de escrever */
+    text-align: center;
+    background-color: #eee;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #800000; /* Vinho */
+    margin-bottom: 20px;
+}
+
+p {
+    color: #333;
+    margin: 5px 0;
+}
+
+button {
+    background-color: #ddd;
+    border: 1px solid #888;
+    color: #333;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ccc;
+}
+
+#velocidade {
+    font-family: Arial, sans-serif; /* Volta para uma fonte mais legível para a velocidade */
+    font-weight: bold;
+    color: #ff0000; /* Vermelho */
+}
+img{
+    width: 200px;
+}
