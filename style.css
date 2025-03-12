@@ -1,43 +1,105 @@
-body {
-    font-family: 'Courier New', Courier, monospace; /* Fonte de máquina de escrever */
-    text-align: center;
-    background-color: #eee;
+/* style.css */
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #e74c3c;
+    --background-color: #f0f0f0;
+    --text-color: #333;
+    --accent-color: #f39c12;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0;
-    padding: 20px;
-}
-
-h1 {
-    color: #800000; /* Vinho */
-    margin-bottom: 20px;
-}
-
-p {
-    color: #333;
-    margin: 5px 0;
-}
-
-button {
-    background-color: #ddd;
-    border: 1px solid #888;
-    color: #333;
-    padding: 8px 16px;
+    padding: 0;
+  }
+  
+  header {
+    background-color: var(--primary-color);
+    color: white;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #ccc;
-}
-
-#velocidade {
-    font-family: Arial, sans-serif; /* Volta para uma fonte mais legível para a velocidade */
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  main {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .veiculo-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  
+  .veiculo-section h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
     font-weight: bold;
-    color: #ff0000; /* Vermelho */
-}
-img{
-    width: 200px;
-}
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Important: Keeps padding inside the width */
+  }
+  
+  .botoes {
+    margin-top: 10px;
+  }
+  
+  button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: var(--accent-color);
+  }
+  
+  .info {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .info img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  }
