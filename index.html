@@ -1,83 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Herança e Estilo em JavaScript</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garagem Inteligente</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <header>
+        <h1>Garagem Inteligente</h1>
+    </header>
 
-  <header>
-    <h1>Gerenciador de Veículos</h1>
-  </header>
+    <main>
+        <section id="selecao-veiculo">
+            <h2>Selecionar Veículo</h2>
+            <button data-tipo="carro">Carro</button>
+            <button data-tipo="esportivo">Carro Esportivo</button>
+            <button data-tipo="caminhao">Caminhão</button>
+        </section>
 
-  <main>
-    <section class="veiculo-section" id="carro-section">
-      <h2>Carro</h2>
-      <label for="modeloCarro">Modelo:</label>
-      <input type="text" id="modeloCarro"><br>
-      <label for="corCarro">Cor:</label>
-      <input type="text" id="corCarro"><br>
-      <label for="imagemCarro">Imagem:</label>
-      <input type="file" id="imagemCarro" accept="image/*"><br>
-      <div class="botoes">
-        <button onclick="criarCarro()">Criar Carro</button>
-        <button onclick="ligarCarro()">Ligar</button>
-        <button onclick="desligarCarro()">Desligar</button>
-        <button onclick="acelerarCarro()">Acelerar</button>
-        <button onclick="frearCarro()">Frear</button>
-      </div>
-      <div id="carroInfo" class="info"></div>
-    </section>
+        <section id="criar-veiculo">
+            <h2>Criar/Modificar Veículo</h2>
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo"><br>
+            <label for="cor">Cor:</label>
+            <input type="text" id="cor"><br>
+            <label for="imagem">Imagem:</label>
+            <input type="file" id="imagem" accept="image/*"><br>
+            <label for="capacidadeCarga" id="labelCapacidadeCarga">Capacidade de Carga:</label>
+            <input type="number" id="capacidadeCarga" style="display: none;"><br>
+            <button id="btnCriarVeiculo">Criar/Modificar Veículo</button>
+        </section>
 
-    <section class="veiculo-section" id="esportivo-section">
-      <h2>Carro Esportivo</h2>
-      <label for="modeloEsportivo">Modelo:</label>
-      <input type="text" id="modeloEsportivo"><br>
-      <label for="corEsportivo">Cor:</label>
-      <input type="text" id="corEsportivo"><br>
-      <label for="imagemEsportivo">Imagem:</label>
-      <input type="file" id="imagemEsportivo" accept="image/*"><br>
-      <div class="botoes">
-        <button onclick="criarEsportivo()">Criar Esportivo</button>
-        <button onclick="ligarEsportivo()">Ligar</button>
-        <button onclick="desligarEsportivo()">Desligar</button>
-        <button onclick="acelerarEsportivo()">Acelerar</button>
-        <button onclick="frearEsportivo()">Frear</button>
-        <button onclick="ativarTurbo()">Ativar Turbo</button>
-        <button onclick="desativarTurbo()">Desativar Turbo</button>
-      </div>
-      <div id="esportivoInfo" class="info"></div>
-    </section>
+        <section id="acoes-veiculo">
+            <h2>Ações</h2>
+            <button data-acao="ligar">Ligar</button>
+            <button data-acao="desligar">Desligar</button>
+            <button data-acao="acelerar">Acelerar</button>
+            <button data-acao="frear">Frear</button>
+            <button data-acao="ativarTurbo" id="btnTurbo">Ativar Turbo</button>
+            <button data-acao="desativarTurbo" id="btnDesativarTurbo">Desativar Turbo</button>
+            <button data-acao="carregar" id="btnCarregar">Carregar</button>
+            <button data-acao="descarregar" id="btnDescarregar">Descarregar</button>
+        </section>
 
-    <section class="veiculo-section" id="caminhao-section">
-      <h2>Caminhão</h2>
-      <label for="modeloCaminhao">Modelo:</label>
-      <input type="text" id="modeloCaminhao"><br>
-      <label for="corCaminhao">Cor:</label>
-      <input type="text" id="corCaminhao"><br>
-      <label for="capacidadeCaminhao">Capacidade:</label>
-      <input type="number" id="capacidadeCaminhao"><br>
-      <label for="imagemCaminhao">Imagem:</label>
-      <input type="file" id="imagemCaminhao" accept="image/*"><br>
-      <div class="botoes">
-        <button onclick="criarCaminhao()">Criar Caminhão</button>
-        <button onclick="ligarCaminhao()">Ligar</button>
-        <button onclick="desligarCaminhao()">Desligar</button>
-        <button onclick="acelerarCaminhao()">Acelerar</button>
-        <button onclick="frearCaminhao()">Frear</button>
-        <button onclick="carregarCaminhao()">Carregar</button>
-        <button onclick="descarregarCaminhao()">Descarregar</button>
-      </div>
-      <div id="caminhaoInfo" class="info"></div>
-    </section>
-  </main>
+        <section id="informacoes-veiculo">
+            <h2>Informações do Veículo</h2>
+            <div id="informacoesVeiculo">Nenhum veículo selecionado.</div>
+            <img id="imagemExibida" src="" alt="Imagem do Veículo" style="display: none; max-width: 200px;">
+        </section>
+    </main>
 
-  <footer>
-    <p>© 2024 - Herança e Estilo com JavaScript</p>
-  </footer>
+    <footer>
+   
+    </footer>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
