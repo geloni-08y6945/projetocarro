@@ -2,35 +2,64 @@
 
 // Classes
 class Veiculo {
-    constructor(modelo, cor, imagem = null, ligado = false, velocidade = 0) {
+    constructor(modelo, cor, imagem = null, ligado = false, velocidade = 0, velocidadeMaxima = 100) {
         this.modelo = modelo;
         this.cor = cor;
         this.imagem = imagem;
         this.ligado = ligado;
         this.velocidade = velocidade;
+        this.velocidadeMaxima = velocidadeMaxima;
     }
 
     ligar() {
+        if (this.ligado) {
+            showAlert("O veículo já está ligado.");
+            return;
+        }
+        playSound("ligar");
         this.ligado = true;
         this.updateDisplay();
     }
 
     desligar() {
+        if (!this.ligado) {
+            showAlert("O veículo já está desligado.");
+            return;
+        }
+        playSound("desligar");
         this.ligado = false;
         this.velocidade = 0;
         this.updateDisplay();
     }
 
     acelerar(incremento) {
-        if (this.ligado) {
-            this.velocidade += incremento;
-            this.updateDisplay();
+        if (!this.ligado) {
+            showAlert("O veículo está desligado. Ligue-o para acelerar.");
+            return;
         }
+        if (this.velocidade + incremento > this.velocidadeMaxima) {
+            showAlert("Velocidade máxima atingida.");
+            this.velocidade = this.velocidadeMaxima;
+            this.updateDisplay();
+            return;
+        }
+        playSound("acelerar");
+        this.velocidade += incremento;
+        this.updateDisplay();
     }
 
     frear(decremento) {
+        if (this.velocidade === 0) {
+            showAlert("O veículo já está parado.");
+            return;
+        }
+        playSound("frear");
         this.velocidade = Math.max(0, this.velocidade - decremento);
         this.updateDisplay();
+    }
+
+    buzinar() {
+        playSound("buzina");
     }
 
     exibirInformacoes() {
@@ -39,6 +68,8 @@ class Veiculo {
 
     updateDisplay() {
         document.getElementById("informacoesVeiculo").textContent = this.exibirInformacoes();
+        updateVelocidadeDisplay(this.velocidade, this.velocidadeMaxima);
+        updateStatusVeiculo(this.ligado);
     }
 }
 
@@ -55,14 +86,27 @@ class CarroEsportivo extends Veiculo {
     }
 
     ativarTurbo() {
-        if (this.ligado) {
-            this.turboAtivado = true;
-            this.updateDisplay();
+        if (!this.ligado) {
+            showAlert("Ligue o carro esportivo antes de ativar o turbo.");
+            return;
         }
+        if (this.turboAtivado) {
+            showAlert("O turbo já está ativado.");
+            return;
+        }
+        playSound("turbo");
+        this.turboAtivado = true;
+        this.velocidadeMaxima = 200;
+        this.updateDisplay();
     }
 
     desativarTurbo() {
+        if (!this.turboAtivado) {
+            showAlert("O turbo já está desativado.");
+            return;
+        }
         this.turboAtivado = false;
+        this.velocidadeMaxima = 100;
         this.updateDisplay();
     }
 
@@ -79,11 +123,19 @@ class Caminhao extends Veiculo {
     }
 
     carregar(quantidade) {
+        if (this.cargaAtual + quantidade > this.capacidadeCarga) {
+            showAlert("Capacidade máxima de carga excedida.");
+            return;
+        }
         this.cargaAtual += quantidade;
         this.updateDisplay();
     }
 
     descarregar(quantidade) {
+        if (quantidade > this.cargaAtual) {
+            showAlert("Não é possível descarregar mais do que a carga atual.");
+            return;
+        }
         this.cargaAtual = Math.max(0, this.cargaAtual - quantidade);
         this.updateDisplay();
     }
@@ -100,6 +152,47 @@ let garagem = {
     caminhao: null
 };
 let veiculoSelecionado = null;
+
+// Sons
+const sons = {
+    ligar: new Audio('sounds/ligar.mp3'),
+    desligar: new Audio('sounds/desligar.mp3'),
+    acelerar: new Audio('sounds/aceleracao.mp3'),
+    frear: new Audio('sounds/freio.mp3'),
+    buzina: new Audio('sounds/buzina.mp3'),
+    turbo: new Audio('sounds/turbo.mp3')
+};
+
+function playSound(nomeSom) {
+    sons[nomeSom].play();
+}
+
+// Function to display alerts
+function showAlert(message) {
+    alert(message);
+}
+
+// Function to update vehicle status display
+function updateStatusVeiculo(ligado) {
+    const statusVeiculoDiv = document.getElementById("statusVeiculo");
+    if (ligado) {
+        statusVeiculoDiv.textContent = "Ligado";
+        statusVeiculoDiv.className = "status-ligado";
+    } else {
+        statusVeiculoDiv.textContent = "Desligado";
+        statusVeiculoDiv.className = "status-desligado";
+    }
+}
+
+// Function to update velocity display
+function updateVelocidadeDisplay(velocidade, velocidadeMaxima) {
+    const velocidadeValorSpan = document.getElementById("velocidadeValor");
+    const progressoVelocidadeDiv = document.getElementById("progressoVelocidade");
+    const porcentagem = (velocidade / velocidadeMaxima) * 100;
+
+    velocidadeValorSpan.textContent = velocidade;
+    progressoVelocidadeDiv.style.width = `${porcentagem}%`;
+}
 
 // Function to select a vehicle type
 document.querySelectorAll("#selecao-veiculo button").forEach(button => {
@@ -150,7 +243,7 @@ function assignVehicle(modelo, cor, imagemURL, capacidadeCarga) {
             garagem.caminhao = new Caminhao(modelo, cor, capacidadeCarga, imagemURL);
             break;
         default:
-            alert("Selecione um tipo de veículo primeiro!");
+            showAlert("Selecione um tipo de veículo primeiro!");
             return;
     }
     updateInfoVeiculo();
@@ -173,12 +266,12 @@ document.querySelectorAll("#acoes-veiculo button").forEach(button => {
                 veiculo = garagem.caminhao;
                 break;
             default:
-                alert("Selecione um tipo de veículo primeiro!");
+                showAlert("Selecione um tipo de veículo primeiro!");
                 return;
         }
 
         if (!veiculo) {
-            alert("Crie um veículo primeiro!");
+            showAlert("Crie um veículo primeiro!");
             return;
         }
 
@@ -195,14 +288,21 @@ document.querySelectorAll("#acoes-veiculo button").forEach(button => {
             case 'frear':
                 veiculo.frear(5);
                 break;
+            case 'buzinar':
+                veiculo.buzinar();
+                break;
             case 'ativarTurbo':
                 if (veiculo instanceof CarroEsportivo) {
                     veiculo.ativarTurbo();
+                } else {
+                    showAlert("Apenas carros esportivos podem ativar o turbo.");
                 }
                 break;
             case 'desativarTurbo':
                 if (veiculo instanceof CarroEsportivo) {
                     veiculo.desativarTurbo();
+                } else {
+                    showAlert("Apenas carros esportivos podem desativar o turbo.");
                 }
                 break;
             case 'carregar':
@@ -210,7 +310,11 @@ document.querySelectorAll("#acoes-veiculo button").forEach(button => {
                     const quantidade = parseInt(prompt("Quantidade para carregar:"));
                     if (!isNaN(quantidade)) {
                         veiculo.carregar(quantidade);
+                    } else {
+                        showAlert("Por favor, insira uma quantidade válida.");
                     }
+                } else {
+                    showAlert("Apenas caminhões podem ser carregados.");
                 }
                 break;
             case 'descarregar':
@@ -218,7 +322,11 @@ document.querySelectorAll("#acoes-veiculo button").forEach(button => {
                     const quantidade = parseInt(prompt("Quantidade para descarregar:"));
                     if (!isNaN(quantidade)) {
                         veiculo.descarregar(quantidade);
+                    } else {
+                        showAlert("Por favor, insira uma quantidade válida.");
                     }
+                } else {
+                    showAlert("Apenas caminhões podem ser descarregados.");
                 }
                 break;
         }
@@ -253,8 +361,12 @@ function updateInfoVeiculo() {
         } else {
             imagemExibida.style.display = 'none';
         }
+        updateVelocidadeDisplay(veiculo.velocidade, veiculo.velocidadeMaxima);
+        updateStatusVeiculo(veiculo.ligado);
     } else {
         infoDiv.textContent = "Nenhum veículo criado ou selecionado.";
         imagemExibida.style.display = 'none';
+        updateVelocidadeDisplay(0, 100);
+        updateStatusVeiculo(false);
     }
 }
